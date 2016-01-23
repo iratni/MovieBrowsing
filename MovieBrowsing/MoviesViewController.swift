@@ -9,14 +9,17 @@
 import UIKit
 import AFNetworking
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var SearchBar: UISearchBar!
+    
     var movies: [NSDictionary]?
+    var lookedMovies: [NSDictionary]?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        SearchBar.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -38,6 +41,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             NSLog("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.lookedMovies = self.movies
                             self.tableView.reloadData()
                             
                     }
@@ -55,7 +59,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if let movies = movies{
+        if let movies = lookedMovies{
             return movies.count
         } else {
             return 0
@@ -67,7 +71,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     {
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         
-        let movie = movies![indexPath.row]
+        let movie = lookedMovies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         let posterPath = movie["poster_path"] as! String
@@ -86,6 +90,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         //  cell.textLabel!.text = title
         print("row \(indexPath.row)")
         return cell
+    }
+    
+    
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            lookedMovies = movies
+        } else {
+            lookedMovies = movies?.filter({ (movie: NSDictionary) -> Bool in
+                if let title = movie["title"] as? String {
+                    if title.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil {
+                        
+                        return  true
+                    } else {
+                        return false
+                    }
+                }
+                return false
+            })
+        }
+        tableView.reloadData()
     }
 
     /*
