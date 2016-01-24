@@ -22,6 +22,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var movies: [NSDictionary]?
     var lookedMovies: [NSDictionary]?
+    
+    var refreshControl = UIRefreshControl()
     override func viewDidLoad() {
         super.viewDidLoad()
         SearchBar.delegate = self
@@ -33,7 +35,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
         
-        let refreshControl = UIRefreshControl()
+        self.refreshControl = UIRefreshControl()
+         refreshControl.addTarget(self, action: "refreshControlAction", forControlEvents: UIControlEvents.ValueChanged)
+       // tableView.insertSubview(refreshControl, atIndex: 0)
+        self.tableView.addSubview(self.refreshControl)
         
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
@@ -47,6 +52,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         BXProgressHUD.showHUDAddedTo(targetView).hide(afterDelay: 3)
         
+        
+        
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
                 if let data = dataOrNil {
@@ -57,6 +64,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                             self.lookedMovies = self.movies
                             self.tableView.reloadData()
+                            
+                            self.refreshControl.endRefreshing()
                             
                     }
                 }
@@ -78,6 +87,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         } else {
             return 0
         }
+    }
+    
+    func refreshControlAction(){
+       // delay(2, closure:{
+            self.refreshControl.endRefreshing()
+      //  })
     }
     
     
