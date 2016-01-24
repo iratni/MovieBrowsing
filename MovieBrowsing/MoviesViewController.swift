@@ -8,6 +8,11 @@
 
 import UIKit
 import AFNetworking
+import BXProgressHUD
+
+
+
+
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
@@ -23,6 +28,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         
+        var targetView: UIView {
+            return self.view
+        }
+        
+        
+        let refreshControl = UIRefreshControl()
+        
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -32,6 +44,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegate:nil,
             delegateQueue:NSOperationQueue.mainQueue()
         )
+        
+        BXProgressHUD.showHUDAddedTo(targetView).hide(afterDelay: 3)
         
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
@@ -76,7 +90,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let overview = movie["overview"] as! String
         let posterPath = movie["poster_path"] as! String
         
-        let baseUrl = "http://image.tmdb.org/t/p/w500"
+        let baseUrl = "https://image.tmdb.org/t/p/w342"
         
         let imageUrl = NSURL(string: baseUrl + posterPath)
         
