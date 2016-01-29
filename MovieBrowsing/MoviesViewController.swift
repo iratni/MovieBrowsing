@@ -20,11 +20,30 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var SearchBar: UISearchBar!
     
+    
     var movies: [NSDictionary]?
     var lookedMovies: [NSDictionary]?
     var endpoint: String!
     
     var refreshControl = UIRefreshControl()
+    
+    // var selectionStyle: UITableViewCellSelectionStyle = .None
+    // var backgroundView: UIView?
+    
+    var backgroundView = UIView()
+    
+    //    enum UITableViewCellSelectionStyle : Int {
+    //        case None
+    //        case Blue
+    //        case Gray
+    //        case Default
+    //    }
+    
+    
+//    var smallImageRequest = NSURLRequest(URL: NSURL(string: smallImageUrl)!)
+//    var largeImageRequest = NSURLRequest(URL: NSURL(string: largeImageUrl)!)
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SearchBar.delegate = self
@@ -40,6 +59,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
          refreshControl.addTarget(self, action: "refreshControlAction", forControlEvents: UIControlEvents.ValueChanged)
        // tableView.insertSubview(refreshControl, atIndex: 0)
         self.tableView.addSubview(self.refreshControl)
+        self.refreshControl.backgroundColor = UIColor.lightGrayColor()
+        self.refreshControl.tintColor = UIColor.redColor()
         
         print("\(endpoint)")
         
@@ -72,6 +93,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 }
         });
         task.resume()
+        
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+//        view.addGestureRecognizer(tap)
 
         // Do any additional setup after loading the view.
     }
@@ -104,6 +128,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let movie = lookedMovies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
+        
+        
+       // cell.selectionStyle = .None
+        // let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.yellowColor()
+        cell.selectedBackgroundView = backgroundView
+        
+        
+
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
         
@@ -113,12 +146,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
        
         cell.posterView.setImageWithURL(imageUrl!)
+            
+
         }
         
         //  cell.textLabel!.text = title
         print("row \(indexPath.row)")
         return cell
     }
+//  
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("did select row")
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        view.endEditing(true)
+    }
+    
+    
+//    
+//    func dismissKeyboard() {
+//        view.endEditing(true)
+//    }
     
     
     
@@ -140,6 +188,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
         tableView.reloadData()
     }
+    
+
 
     
     // MARK: - Navigation
