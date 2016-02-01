@@ -20,22 +20,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        
+        
+        let ComingSoonNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
+        let ComingSoonViewController = ComingSoonNavigationController.topViewController as! MoviesViewController
+        ComingSoonViewController.endpoint = "upcoming"
+        ComingSoonNavigationController.view.backgroundColor = UIColor.blueColor()
+        ComingSoonNavigationController.tabBarItem.title = "Coming Soon"
+        ComingSoonNavigationController.tabBarItem.image = UIImage(named: "ComingSoon")
+        
+        
+        
+        
+        
         let nowPlayingNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
         let nowPlayingViewController = nowPlayingNavigationController.topViewController as! MoviesViewController
         nowPlayingViewController.endpoint = "now_playing"
+        nowPlayingNavigationController.view.backgroundColor = UIColor.blueColor()
         nowPlayingNavigationController.tabBarItem.title = "Now Playing"
         nowPlayingNavigationController.tabBarItem.image = UIImage(named: "now_playing")
+        
+        
+        
+        
+        
+        
         
         
         let topRatedNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
         let topRatedViewController = topRatedNavigationController.topViewController as! MoviesViewController
         topRatedViewController.endpoint = "top_rated"
+        topRatedNavigationController.view.backgroundColor = UIColor.greenColor()
         topRatedNavigationController.tabBarItem.title = "Top Rated"
         topRatedNavigationController.tabBarItem.image = UIImage(named: "top_rated")
         
         
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [nowPlayingNavigationController, topRatedNavigationController]
+        tabBarController.viewControllers = [nowPlayingNavigationController, topRatedNavigationController, ComingSoonNavigationController]
+        
+        tabBarController.tabBar.tintColor = UIColor(red: 100/430, green: 100/200, blue: 30/200, alpha: 1)
+        tabBarController.tabBar.barTintColor = UIColor.yellowColor()
+        tabBarController.tabBar.translucent = true
+        
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

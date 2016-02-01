@@ -20,6 +20,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var SearchBar: UISearchBar!
     
+        
     
     var movies: [NSDictionary]?
     var lookedMovies: [NSDictionary]?
@@ -39,9 +40,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     //        case Default
     //    }
     
-    
-//    var smallImageRequest = NSURLRequest(URL: NSURL(string: smallImageUrl)!)
-//    var largeImageRequest = NSURLRequest(URL: NSURL(string: largeImageUrl)!)
     
     
     override func viewDidLoad() {
@@ -98,6 +96,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 //        view.addGestureRecognizer(tap)
 
         // Do any additional setup after loading the view.
+        
+        
+        switch tabBarController?.selectedIndex{
+        case 0?:
+            navigationItem.title = "Now Playing"
+        case 1?:
+            navigationItem.title = "Top Rated"
+        case 2?:
+            navigationItem.title = "Coming Soon"
+        default: break
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -189,8 +198,24 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.reloadData()
     }
     
-
-
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        UIView.animateWithDuration(0, animations:{
+            self.SearchBar.setShowsCancelButton(true, animated: true)
+        })
+    }
+   
+    
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        (lookedMovies, searchBar.text) = (movies, "")
+        self.SearchBar.setShowsCancelButton(false, animated: true)
+        tableView.reloadData()
+        
+        searchBar.resignFirstResponder()
+    }
+    
+    
     
     // MARK: - Navigation
 
