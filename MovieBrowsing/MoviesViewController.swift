@@ -156,6 +156,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
        
         cell.posterView.setImageWithURL(imageUrl!)
             
+            switch tabBarController?.selectedIndex{
+            case 0?:
+                cell.backgroundColor = UIColor.greenColor()
+            case 1?:
+                cell.backgroundColor = UIColor.orangeColor()
+            case 2?:
+                cell.backgroundColor = UIColor.brownColor()
+            default: break
+            }
+            
 
         }
         

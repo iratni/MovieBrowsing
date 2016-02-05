@@ -50,6 +50,9 @@ class DetailViewController: UIViewController {
         let smallImageUrl = "https://image.tmdb.org/t/p/w45"
         let largeImageUrl = "https://image.tmdb.org/t/p/original"
         
+      
+        
+        
         let smallImageRequest = NSURLRequest(URL: NSURL(string: smallImageUrl)!)
         let largeImageRequest = NSURLRequest(URL: NSURL(string: largeImageUrl)!)
         

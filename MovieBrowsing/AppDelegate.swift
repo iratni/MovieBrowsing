@@ -24,7 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         let ComingSoonNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
-        let ComingSoonViewController = ComingSoonNavigationController.topViewController as! MoviesViewController
+    //    var ComingSoonViewController = UIViewController()
+       let ComingSoonViewController = ComingSoonNavigationController.topViewController as! MoviesViewController
         ComingSoonViewController.endpoint = "upcoming"
         ComingSoonNavigationController.view.backgroundColor = UIColor.blueColor()
         ComingSoonNavigationController.tabBarItem.title = "Coming Soon"
